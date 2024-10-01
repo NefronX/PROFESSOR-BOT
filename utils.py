@@ -137,7 +137,7 @@ def list_to_str(k):
     else:
         return ' '.join(f'{elem}, ' for elem in k)
 
-__repo__ = "https://github.com/MrMKN/PROFESSOR-BOT"
+__repo__ = "https://github.com/ihackerdoc/PROFESSOR-BOT"
 __version__ = "PROFESSOR-BOT ᴠ4.5.0"
 __license__ = "GNU GENERAL PUBLIC LICENSE V2"
 __copyright__ = "Copyright (C) 2023-present MrMKN <https://github.com/MrMKN>"
@@ -318,7 +318,17 @@ async def get_shortlink(link):
     except Exception as e:
         logger.error(e)
         return link
-
+        
+                    
+    except aiohttp.ClientResponseError as e:
+        logger.error(f"HTTP error: {e.status} - {e.message}")
+        return link
+    except aiohttp.ClientError as e:
+        logger.error(f"Client error: {e}")
+        return link
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        return link
 
 # from Midukki-RoBoT
 def extract_time(time_val):
@@ -358,9 +368,3 @@ async def admin_check(message: Message) -> bool:
 
 async def admin_filter(filt, client, message):
     return await admin_check(message)
-
-
-
-
-
-
